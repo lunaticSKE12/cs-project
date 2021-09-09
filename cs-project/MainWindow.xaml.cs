@@ -1,6 +1,7 @@
 ﻿using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
+using FireSharp.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,15 +29,24 @@ namespace cs_project
             InitializeComponent();
         }
 
-        private void FireBaseConnectionButton_Click(object sender, RoutedEventArgs e)
+        private async void FireBaseConnectionButton_Click(object sender, RoutedEventArgs e)
         {
+            // Firebase config
             IFirebaseConfig config = new FirebaseConfig
             {
                 AuthSecret = "7t74HzDu1QwwPPOqhYNhAXBedNnV3TpvcSrrwdwE",
                 BasePath = "https://csharpdotnet-61e3e-default-rtdb.asia-southeast1.firebasedatabase.app/"
             };
 
+            // Connect firebase
             IFirebaseClient client = new FirebaseClient(config);
+
+            // Get data "name" from firebase
+            FirebaseResponse response = await client.GetAsync("name");
+
+            //Show data from Firebase
+            string fullname = response.ResultAs<String>();
+            MessageBox.Show(fullname);
         }
     }
 }
